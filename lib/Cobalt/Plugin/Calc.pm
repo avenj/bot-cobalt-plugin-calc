@@ -16,12 +16,14 @@ sub Cobalt_register {
     ],
   );
   
+  $core->log->info("Loaded");
   return PLUGIN_EAT_NONE
 }
 
 sub Cobalt_unregister {
   my ($self, $core) = splice @_, 0, 2;
-  
+  $core->unloader_cleanup('Cobalt::Plugin::Calc::Parser::MGC');
+  $core->log->info("Unloaded");  
   return PLUGIN_EAT_NONE
 }
 
