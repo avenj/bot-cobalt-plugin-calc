@@ -1,0 +1,33 @@
+---
+abstract: 'Calculator plugin for Cobalt'
+author:
+  - 'Jon Portnoy <avenj@cobaltirc.org>'
+build_requires: {}
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 1
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112150'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Cobalt-Plugin-Calc
+provides:
+  Cobalt::Plugin::Calc:
+    file: lib/Cobalt/Plugin/Calc.pm
+    version: 0.01
+  Cobalt::Plugin::Calc::Parser::MGC:
+    file: lib/Cobalt/Plugin/Calc/Parser/MGC.pm
+    version: 0
+  Cobalt::Plugin::Calc::Parser::RPN:
+    file: lib/Cobalt/Plugin/Calc/Parser/RPN.pm
+    version: 0
+requires:
+  Cobalt::Common: 0
+  Cobalt::Core: 0
+  Cobalt::Serializer: 0
+  Parser::MGC: 0.10
+  perl: v5.12.1
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01

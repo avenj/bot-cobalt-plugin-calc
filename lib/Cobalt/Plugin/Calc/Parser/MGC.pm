@@ -1,4 +1,5 @@
 package Cobalt::Plugin::Calc::Parser::MGC;
+## essentially same as example included w/ Parser::MGC
 
 use strict;
 use warnings;

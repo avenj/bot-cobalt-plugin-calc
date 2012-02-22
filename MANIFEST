@@ -1,0 +1,9 @@
+Build.PL
+lib/Cobalt/Plugin/Calc.pm
+lib/Cobalt/Plugin/Calc/Parser/MGC.pm
+lib/Cobalt/Plugin/Calc/Parser/RPN.pm
+lib/Cobalt/Plugin/Calc/Stack.pm
+MANIFEST			This list of files
+Makefile.PL
+META.yml
+META.json
