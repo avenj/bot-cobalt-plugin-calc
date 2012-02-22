@@ -1,5 +1,5 @@
 package Cobalt::Plugin::Calc;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Cobalt::Common;
 use Cobalt::Plugin::Calc::Parser::MGC;
@@ -38,7 +38,7 @@ sub Bot_public_cmd_calc {
   my $result;
 
   eval { $result = $calc->from_string($calcstr) };
-  $result = "Parse failure." if $@;
+  $result = "Parser said: $@" if $@;
 
   $core->send_event( 'send_message',
     $context, $msg->{channel},
