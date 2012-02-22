@@ -1,4 +1,5 @@
 package Cobalt::Plugin::Calc::Parser::MGC;
+our $VERSION = '0.02';
 ## essentially same as example included w/ Parser::MGC
 
 use strict;
@@ -54,6 +55,19 @@ sub parse_high {
   return $value
 }
 
+sub token_oct {
+  my $self = shift;
+  $self->generic_token( 
+    oct => qr/^0\d+/, sub { 
+      eval { use warnings FATAL => 'all' ; no warnings 'void' ; oct $_[1] };
+      if ($@) {
+        die "Not a valid oct";
+      }
+      oct $_[1]
+    }
+  );
+}
+
 sub parse_chunk {
   my ($self) = @_;
   $self->any_of(
@@ -61,6 +75,7 @@ sub parse_chunk {
         "(", sub { $self->commit; $self->parse }, ")"
       )
     },
+    sub { $self->token_oct },
     sub { $self->token_number },
   );
 }
