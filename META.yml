@@ -15,10 +15,10 @@ name: Cobalt-Plugin-Calc
 provides:
   Cobalt::Plugin::Calc:
     file: lib/Cobalt/Plugin/Calc.pm
-    version: 0.01
+    version: 0.02
   Cobalt::Plugin::Calc::Parser::MGC:
     file: lib/Cobalt/Plugin/Calc/Parser/MGC.pm
-    version: 0
+    version: 0.02
   Cobalt::Plugin::Calc::Parser::RPN:
     file: lib/Cobalt/Plugin/Calc/Parser/RPN.pm
     version: 0
@@ -30,4 +30,4 @@ requires:
   perl: v5.12.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

@@ -32,11 +32,11 @@
    "provides" : {
       "Cobalt::Plugin::Calc" : {
          "file" : "lib/Cobalt/Plugin/Calc.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       },
       "Cobalt::Plugin::Calc::Parser::MGC" : {
          "file" : "lib/Cobalt/Plugin/Calc/Parser/MGC.pm",
-         "version" : 0
+         "version" : "0.02"
       },
       "Cobalt::Plugin::Calc::Parser::RPN" : {
          "file" : "lib/Cobalt/Plugin/Calc/Parser/RPN.pm",
@@ -49,5 +49,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }

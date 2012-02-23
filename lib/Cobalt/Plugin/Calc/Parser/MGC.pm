@@ -1,6 +1,6 @@
 package Cobalt::Plugin::Calc::Parser::MGC;
 our $VERSION = '0.02';
-## essentially same as example included w/ Parser::MGC
+## based on example included w/ Parser::MGC
 
 use strict;
 use warnings;
@@ -59,10 +59,11 @@ sub token_oct {
   my $self = shift;
   $self->generic_token( 
     oct => qr/^0\d+/, sub { 
-      eval { use warnings FATAL => 'all' ; no warnings 'void' ; oct $_[1] };
-      if ($@) {
-        die "Not a valid oct";
-      }
+      eval { 
+        use warnings FATAL => 'all' ; no warnings 'void' ; 
+        oct $_[1] 
+      };
+      die "Not a valid oct" if $@;
       oct $_[1]
     }
   );
