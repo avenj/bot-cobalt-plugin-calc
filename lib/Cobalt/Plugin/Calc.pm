@@ -50,8 +50,36 @@ sub Bot_public_cmd_calc {
   return PLUGIN_EAT_ALL
 }
 
-sub Bot_public_cmd_rpn {
-
-}
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Cobalt::Plugin::Calc - Simple calculator for Cobalt
+
+=head1 SYNOPSIS
+
+  !calc (2+2)*(2+4)
+  !calc 0xff
+  !calc 0644
+
+=head1 DESCRIPTION
+
+Simple calculator.
+
+Understands - + * / operations.
+
+Also understands hex and octal.
+
+A RPN-style calculator with a stack is planned.
+
+=head1 AUTHOR
+
+Jon Portnoy <avenj@cobaltirc.org>
+
+L<http://www.cobaltirc.org>
+
+=cut
