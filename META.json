@@ -36,7 +36,7 @@
       },
       "Cobalt::Plugin::Calc::Parser::MGC" : {
          "file" : "lib/Cobalt/Plugin/Calc/Parser/MGC.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       },
       "Cobalt::Plugin::Calc::Parser::RPN" : {
          "file" : "lib/Cobalt/Plugin/Calc/Parser/RPN.pm",
