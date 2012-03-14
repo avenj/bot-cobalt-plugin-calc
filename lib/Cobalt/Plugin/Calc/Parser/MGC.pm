@@ -1,5 +1,5 @@
 package Cobalt::Plugin::Calc::Parser::MGC;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 ## based on example included w/ Parser::MGC
 
 use strict;
@@ -37,6 +37,12 @@ sub parse_high {
   my ($self) = @_;
   my $value = $self->parse_chunk;
   1 while $self->any_of(
+    sub {
+      $self->expect("^");
+      $self->commit;
+      $value = $value ** $self->parse_chunk;
+      1;
+    },
     sub { 
       $self->expect("*"); 
       $self->commit; 
