@@ -1,6 +1,7 @@
 package Cobalt::Plugin::Calc;
 our $VERSION = '0.03';
 
+use 5.12.1;
 use Cobalt::Common;
 use Cobalt::Plugin::Calc::Parser::MGC;
 
