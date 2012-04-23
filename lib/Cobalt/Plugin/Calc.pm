@@ -45,7 +45,7 @@ sub Bot_public_cmd_calc {
   $result = "Parser said: $@" if $@;
 
   $core->send_event( 'send_message',
-    $context, $msg->{channel},
+    $context, $msg->channel,
     "${nick}: $result"
   );
   
