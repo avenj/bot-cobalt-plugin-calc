@@ -1,7 +1,7 @@
 package Cobalt::Plugin::Calc;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
-use 5.12.1;
+use 5.10.1;
 use Cobalt::Common;
 use Cobalt::Plugin::Calc::Parser::MGC;
 
@@ -30,14 +30,15 @@ sub Cobalt_unregister {
 
 sub Bot_public_cmd_calc {
   my ($self, $core) = splice @_, 0, 2;
-  my $context = ${ $_[0] };
-  my $msg     = ${ $_[1] };
+  my $msg     = ${ $_[0] };
+  my $context = $msg->context;
   
-  my $nick = $msg->{src_nick};
+  my $nick = $msg->src_nick;
   
   my $calc = Cobalt::Plugin::Calc::Parser::MGC->new;
   
-  my $calcstr = join '', @{ $msg->{message_array} };
+  my $msgarr  = $msg->message_array;
+  my $calcstr = join '', @$msgarr;
   my $result;
 
   eval { $result = $calc->from_string($calcstr) };

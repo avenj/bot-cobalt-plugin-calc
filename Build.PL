@@ -12,8 +12,10 @@ my $build = Module::Build->new(
   
   create_makefile_pl => 'small',
   
+  create_readme => 1,
+  
   requires => {
-    'perl' => '5.12.1',
+    'perl' => '5.10.1',
 
     'Cobalt::Core'       => 0,
     'Cobalt::Serializer' => 0,
