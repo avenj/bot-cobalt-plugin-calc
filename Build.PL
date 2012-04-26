@@ -4,7 +4,7 @@ use warnings;
 use Module::Build;
 
 my $build = Module::Build->new(
-  module_name => 'Cobalt::Plugin::Calc',
+  module_name => 'Bot::Cobalt::Plugin::Calc',
   dist_abstract => 'Calculator plugin for Cobalt',
   dist_author  => 'Jon Portnoy <avenj@cobaltirc.org>',
 
@@ -17,9 +17,9 @@ my $build = Module::Build->new(
   requires => {
     'perl' => '5.10.1',
 
-    'Cobalt::Core'       => 0,
-    'Cobalt::Serializer' => 0,
-    'Cobalt::Common'     => 0,
+    'Bot::Cobalt::Core'       => 0,
+    'Bot::Cobalt::Serializer' => 0,
+    'Bot::Cobalt::Common'     => 0,
 
     'Parser::MGC' => '0.10',
   },

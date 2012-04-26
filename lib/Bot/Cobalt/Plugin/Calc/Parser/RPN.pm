@@ -1,9 +1,9 @@
-package Cobalt::Plugin::Calc::Parser::RPN;
+package Bot::Cobalt::Plugin::Calc::Parser::RPN;
 
 ## FIXME
 
 ## Stateful parser with a stack
-##  my $rpn = Cobalt::Plugin::Calc::Parser::RPN->new;
+##  my $rpn = Bot::Cobalt::Plugin::Calc::Parser::RPN->new;
 ##  my $current = $rpn->stack_current($stackID);
 ## push a number or calculation to the stack:
 ##  my $current = $rpn->calc($stackID, "2");

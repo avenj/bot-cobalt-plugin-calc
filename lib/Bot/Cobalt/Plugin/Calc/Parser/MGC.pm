@@ -1,4 +1,4 @@
-package Cobalt::Plugin::Calc::Parser::MGC;
+package Bot::Cobalt::Plugin::Calc::Parser::MGC;
 our $VERSION = '0.03';
 ## based on example included w/ Parser::MGC
 

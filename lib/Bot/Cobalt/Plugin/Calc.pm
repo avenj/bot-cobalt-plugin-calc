@@ -1,9 +1,9 @@
-package Cobalt::Plugin::Calc;
+package Bot::Cobalt::Plugin::Calc;
 our $VERSION = '0.04';
 
 use 5.10.1;
-use Cobalt::Common;
-use Cobalt::Plugin::Calc::Parser::MGC;
+use Bot::Cobalt::Common;
+use Bot::Cobalt::Plugin::Calc::Parser::MGC;
 
 sub new { bless {}, shift }
 
@@ -23,7 +23,7 @@ sub Cobalt_register {
 
 sub Cobalt_unregister {
   my ($self, $core) = splice @_, 0, 2;
-  $core->unloader_cleanup('Cobalt::Plugin::Calc::Parser::MGC');
+  $core->unloader_cleanup('Bot::Cobalt::Plugin::Calc::Parser::MGC');
   $core->log->info("Unloaded");  
   return PLUGIN_EAT_NONE
 }
@@ -35,7 +35,7 @@ sub Bot_public_cmd_calc {
   
   my $nick = $msg->src_nick;
   
-  my $calc = Cobalt::Plugin::Calc::Parser::MGC->new;
+  my $calc = Bot::Cobalt::Plugin::Calc::Parser::MGC->new;
   
   my $msgarr  = $msg->message_array;
   my $calcstr = join '', @$msgarr;
@@ -60,7 +60,7 @@ __END__
 
 =head1 NAME
 
-Cobalt::Plugin::Calc - Simple calculator for Cobalt
+Bot::Cobalt::Plugin::Calc - Simple calculator for Cobalt
 
 =head1 SYNOPSIS
 
