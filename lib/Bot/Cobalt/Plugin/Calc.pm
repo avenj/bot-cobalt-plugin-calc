@@ -1,7 +1,8 @@
 package Bot::Cobalt::Plugin::Calc;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use 5.10.1;
+use Bot::Cobalt;
 use Bot::Cobalt::Common;
 use Bot::Cobalt::Plugin::Calc::Parser::MGC;
 
@@ -10,43 +11,45 @@ sub new { bless {}, shift }
 sub Cobalt_register {
   my ($self, $core) = splice @_, 0, 2;
   
-  $core->plugin_register( $self, 'SERVER',
+  register( $self, 'SERVER',
     [
       'public_cmd_calc',
       'public_cmd_rpn',
     ],
   );
   
-  $core->log->info("Loaded");
+  logger->info("Loaded");
+  
   return PLUGIN_EAT_NONE
 }
 
 sub Cobalt_unregister {
   my ($self, $core) = splice @_, 0, 2;
+  
   $core->unloader_cleanup('Bot::Cobalt::Plugin::Calc::Parser::MGC');
-  $core->log->info("Unloaded");  
+  
+  logger->info("Unloaded");  
+  
   return PLUGIN_EAT_NONE
 }
 
 sub Bot_public_cmd_calc {
   my ($self, $core) = splice @_, 0, 2;
   my $msg     = ${ $_[0] };
-  my $context = $msg->context;
-  
-  my $nick = $msg->src_nick;
   
   my $calc = Bot::Cobalt::Plugin::Calc::Parser::MGC->new;
   
   my $msgarr  = $msg->message_array;
   my $calcstr = join '', @$msgarr;
+  
   my $result;
-
   eval { $result = $calc->from_string($calcstr) };
   $result = "Parser said: $@" if $@;
 
-  $core->send_event( 'send_message',
-    $context, $msg->channel,
-    "${nick}: $result"
+  broadcast( 'message', 
+    $msg->context, 
+    $msg->channel,
+    $msg->src_nick.": $result"
   );
   
   return PLUGIN_EAT_ALL
