@@ -15,7 +15,9 @@ my $build = Module::Build->new(
   create_readme => 1,
   
   requires => {
-    'perl' => '5.10.1',
+    'perl' => '5.12.1',
+    
+    'strictures' => 1,
 
     'Bot::Cobalt::Core'       => 0,
     'Bot::Cobalt::Serializer' => 0,
