@@ -15,10 +15,9 @@ sub Cobalt_register {
   my ($self, $core) = splice @_, 0, 2;
   
   register( $self, 'SERVER',
-    [
-      'public_cmd_calc',
-      'public_cmd_rpn',
-    ],
+
+    'public_cmd_calc',
+
   );
   
   logger->info("Loaded");
@@ -49,9 +48,7 @@ sub Bot_public_cmd_calc {
   eval { $result = $calc->from_string($calcstr) };
   $result = "Parser said: $@" if $@;
 
-  broadcast( 'message', 
-    $msg->context, 
-    $msg->channel,
+  broadcast( 'message', $msg->context, $msg->channel,
     $msg->src_nick.": $result"
   );
   
@@ -66,7 +63,7 @@ __END__
 
 =head1 NAME
 
-Bot::Cobalt::Plugin::Calc - Simple calculator for Cobalt
+Bot::Cobalt::Plugin::Calc - Simple calculator for Bot::Cobalt
 
 =head1 SYNOPSIS
 
@@ -76,7 +73,7 @@ Bot::Cobalt::Plugin::Calc - Simple calculator for Cobalt
 
 =head1 DESCRIPTION
 
-Simple calculator using L<Parser::MGC>.
+Simple L<Bot::Cobalt> calculator plugin using L<Parser::MGC>.
 
 Understands - + * / ^ operations.
 
