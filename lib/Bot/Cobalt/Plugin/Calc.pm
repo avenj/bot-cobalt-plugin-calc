@@ -1,10 +1,13 @@
 package Bot::Cobalt::Plugin::Calc;
-our $VERSION = '0.05';
+our $VERSION = '0.001';
 
-use 5.10.1;
+use 5.12.1;
+use strictures 1;
+
 use Bot::Cobalt;
 use Bot::Cobalt::Common;
-use Bot::Cobalt::Plugin::Calc::Parser::MGC;
+
+use Bot::Cobalt::Plugin::Calc::Parser;
 
 sub new { bless {}, shift }
 
@@ -26,7 +29,7 @@ sub Cobalt_register {
 sub Cobalt_unregister {
   my ($self, $core) = splice @_, 0, 2;
   
-  $core->unloader_cleanup('Bot::Cobalt::Plugin::Calc::Parser::MGC');
+  $core->unloader_cleanup('Bot::Cobalt::Plugin::Calc::Parser');
   
   logger->info("Unloaded");  
   
@@ -37,7 +40,7 @@ sub Bot_public_cmd_calc {
   my ($self, $core) = splice @_, 0, 2;
   my $msg     = ${ $_[0] };
   
-  my $calc = Bot::Cobalt::Plugin::Calc::Parser::MGC->new;
+  my $calc = Bot::Cobalt::Plugin::Calc::Parser->new;
   
   my $msgarr  = $msg->message_array;
   my $calcstr = join '', @$msgarr;
@@ -73,13 +76,16 @@ Bot::Cobalt::Plugin::Calc - Simple calculator for Cobalt
 
 =head1 DESCRIPTION
 
-Simple calculator.
+Simple calculator using L<Parser::MGC>.
 
-Understands - + * / operations.
+Understands - + * / ^ operations.
 
 Also understands hex and octal.
 
-A RPN-style calculator with a stack is planned.
+=head1 TODO
+
+A RPN-style calculator with a persistent per-user stack is planned as 
+sort of an IRC C<dc> ... eventually.
 
 =head1 AUTHOR
 
