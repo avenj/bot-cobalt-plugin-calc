@@ -1,3 +1,4 @@
+Changes
 Build.PL
 lib/Bot/Cobalt/Plugin/Calc.pm
 lib/Bot/Cobalt/Plugin/Calc/Parser.pm
@@ -9,3 +10,4 @@ t/01_loadable.t
 t/02_int.t
 t/03_float.t
 t/04_groups.t
+README

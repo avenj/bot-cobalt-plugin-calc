@@ -4,7 +4,7 @@
       "Jon Portnoy <avenj@cobaltirc.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112150",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Cobalt-Plugin-Calc",
+   "name" : "Bot-Cobalt-Plugin-Calc",
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -21,25 +21,22 @@
       },
       "runtime" : {
          "requires" : {
-            "Cobalt::Common" : 0,
-            "Cobalt::Core" : 0,
-            "Cobalt::Serializer" : 0,
+            "Bot::Cobalt::Common" : "0",
+            "Bot::Cobalt::Core" : "0",
+            "Bot::Cobalt::Serializer" : "0",
             "Parser::MGC" : "0.10",
-            "perl" : "v5.12.1"
+            "perl" : "v5.12.1",
+            "strictures" : "1"
          }
       }
    },
    "provides" : {
-      "Cobalt::Plugin::Calc" : {
-         "file" : "lib/Cobalt/Plugin/Calc.pm",
-         "version" : "0.03"
+      "Bot::Cobalt::Plugin::Calc" : {
+         "file" : "lib/Bot/Cobalt/Plugin/Calc.pm",
+         "version" : "0.001"
       },
-      "Cobalt::Plugin::Calc::Parser::MGC" : {
-         "file" : "lib/Cobalt/Plugin/Calc/Parser/MGC.pm",
-         "version" : "0.03"
-      },
-      "Cobalt::Plugin::Calc::Parser::RPN" : {
-         "file" : "lib/Cobalt/Plugin/Calc/Parser/RPN.pm",
+      "Bot::Cobalt::Plugin::Calc::Parser" : {
+         "file" : "lib/Bot/Cobalt/Plugin/Calc/Parser.pm",
          "version" : 0
       }
    },
@@ -49,5 +46,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.03"
+   "version" : "0.001"
 }
