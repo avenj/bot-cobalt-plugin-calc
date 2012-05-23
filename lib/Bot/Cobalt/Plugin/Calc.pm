@@ -1,5 +1,5 @@
 package Bot::Cobalt::Plugin::Calc;
-our $VERSION = '0.001';
+our $VERSION = '0.002_01';
 
 use 5.12.1;
 use strictures 1;
@@ -20,7 +20,7 @@ sub Cobalt_register {
 
   );
   
-  logger->info("Loaded");
+  logger->info("Loaded ($VERSION)");
   
   return PLUGIN_EAT_NONE
 }
