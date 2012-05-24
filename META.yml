@@ -1,5 +1,5 @@
 ---
-abstract: 'Calculator plugin for Cobalt'
+abstract: 'Calculator plugin for Bot::Cobalt'
 author:
   - 'Jon Portnoy <avenj@cobaltirc.org>'
 build_requires: {}
@@ -15,7 +15,7 @@ name: Bot-Cobalt-Plugin-Calc
 provides:
   Bot::Cobalt::Plugin::Calc:
     file: lib/Bot/Cobalt/Plugin/Calc.pm
-    version: 0.001
+    version: 0.002
   Bot::Cobalt::Plugin::Calc::Parser:
     file: lib/Bot/Cobalt/Plugin/Calc/Parser.pm
     version: 0
@@ -28,4 +28,4 @@ requires:
   strictures: 1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.001
+version: 0.002
