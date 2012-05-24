@@ -5,7 +5,7 @@ use Module::Build;
 
 my $build = Module::Build->new(
   module_name => 'Bot::Cobalt::Plugin::Calc',
-  dist_abstract => 'Calculator plugin for Cobalt',
+  dist_abstract => 'Calculator plugin for Bot::Cobalt',
   dist_author  => 'Jon Portnoy <avenj@cobaltirc.org>',
 
   license => 'perl',
