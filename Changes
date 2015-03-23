@@ -1,7 +1,17 @@
-## Changes for Bot::Cobalt::Plugin::Calc
+Revision history for Perl module Bot::Cobalt::Plugin::Calc
 
- * 0.002
-   Test improvements.
+0.003001 2015-03-22
 
- * 0.001
-   Initial release.
+  - Kill custom parser in favor of Math::Calc::Parser
+
+  - Cleanups
+
+  - Packaging improvements
+
+0.002 2012-05-23
+
+  - Test improvements.
+
+0.001 2012-05-23
+
+  - Initial release.
