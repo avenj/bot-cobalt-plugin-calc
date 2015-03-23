@@ -1,0 +1,20 @@
+# NAME
+
+Bot::Cobalt::Plugin::Calc - Calculator plugin for Bot::Cobalt
+
+# SYNOPSIS
+
+    # See Math::Calc::Parser ->
+    !calc 2 + 2
+    !calc 0xff << 2
+    !calc int rand 5
+
+# DESCRIPTION
+
+A [Bot::Cobalt](https://metacpan.org/pod/Bot::Cobalt) calculator plugin using [Math::Calc::Parser](https://metacpan.org/pod/Math::Calc::Parser).
+
+See the [Math::Calc::Parser](https://metacpan.org/pod/Math::Calc::Parser) documentation for details.
+
+# AUTHOR
+
+Jon Portnoy <avenj@cobaltirc.org>
