@@ -1,6 +1,6 @@
 package Bot::Cobalt::Plugin::Calc::Session;
 
-use feature 'state';
+use v5.10;
 
 use Config;
 
@@ -43,11 +43,16 @@ sub new {
   ], $class
 }
 
+sub session_id { shift->[SESSID] }
+
+sub _wheels { shift->[WHEELS] }
+sub _tag_by_wid { shift->[TAG_BY_WID] }
+sub _requests { shift->[REQUESTS] }
+
 sub start {
   my $self = shift;
-  $self = $self->new(@_) unless ref $self;
 
-  POE::Session->create(
+  my $sess = POE::Session->create(
     object_states => [
       $self => +{
         _start    => 'px_start',
@@ -57,13 +62,17 @@ sub start {
         calc      => 'px_calc',
         push      => 'px_push',
         
-        wheel_error     => 'px_wheel_error',
         worker_input    => 'px_worker_input',
         worker_stderr   => 'px_worker_stderr',
         worker_sigchld  => 'px_worker_sigchld',
+        worker_closed   => 'px_worker_closed',
       },
     ],
   );
+
+  $self->[SESSID] = $sess->ID;
+
+  $self
 }
 
 
@@ -74,7 +83,7 @@ sub px_start {
 
 sub px_shutdown {
   my ($kernel, $self) = @_[KERNEL, OBJECT];
-  $kernel->call( $_[SESSION], 'px_cleanup' );
+  $kernel->call( $_[SESSION], 'cleanup' );
   $kernel->refcount_decrement( $_[SESSION]->ID, 'Waiting for requests' );
 }
 
@@ -163,25 +172,18 @@ sub _create_wheel {
   }
 
   my $wheel = POE::Wheel::Run->new(
-    CloseOnCall => 1,
     Program     => $forkable,
     StdioFilter => POE::Filter::Reference->new,
-    ErrorEvent  => 'wheel_error',
     StderrEvent => 'worker_stderr',
     StdoutEvent => 'worker_input',
+    CloseEvent  => 'worker_closed',
   );
 
   my $pid = $wheel->PID;
-  $poe_kernel->sig_child($pid, 'worker_sigchld');
   $self->[WHEELS]->{$pid} = $wheel;
+  $poe_kernel->sig_child($pid, 'worker_sigchld');
 
   $wheel
-}
-
-sub px_wheel_error {
-  my ($op, $errnum, $errstr, $wid) = @_[ARG0 .. $#_];
-  $errstr = 'remote end closed' if $op eq 'read' and not $errnum;
-  warn "wheel '$wid' err: '$op': $errstr ($errnum)"
 }
 
 sub px_worker_input {
@@ -211,27 +213,27 @@ sub px_worker_stderr {
   my $req = delete $self->[REQUESTS]->{$tag};
   if (defined $req) {
     my $sender_id = $req->{sender_id};
-    my $hintshash = $req->{hints};
+    my $hints     = $req->{hints};
     $kernel->post( $req->{sender_id} => $self->[ERROR_EVENT] =>
-      "worker '$wid' stderr: $input"
+      "worker '$wid' stderr: $input", $hints
     )
   } else {
     warn "stderr from worker but request unavailable: $input"
   }
 }
 
+sub px_worker_closed {
+  my ($kernel, $self) = @_[KERNEL, OBJECT];
+  my $wid = $_[ARG0];
+  delete $self->[TAG_BY_WID]->{$wid};
+}
+
 sub px_worker_sigchld {
   my ($kernel, $self) = @_[KERNEL, OBJECT];
   my $pid = $_[ARG1];
-  my $wheel = delete $self->[WHEELS]->{$pid};
-  unless (defined $wheel) {
-    warn "px_worker_sigchld but no wheel for pid '$pid' found";
-    return
-  }
-  unless (delete $self->[TAG_BY_WID]->{ $wheel->ID }) {
-    warn "BUG? px_worker_sigchld found wheel but no tag for pid '$pid'";
-  }
-  $kernel->yield('px_push')
+  my $wheel = delete $self->[WHEELS]->{$pid} || return;
+  delete $self->[TAG_BY_WID]->{ $wheel->ID };
+  $kernel->yield('push')
 }
 
 

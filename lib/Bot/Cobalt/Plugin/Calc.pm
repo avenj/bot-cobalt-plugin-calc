@@ -2,15 +2,40 @@ package Bot::Cobalt::Plugin::Calc;
 
 use strictures 2;
 
+use List::Objects::WithUtils;
+
 use Bot::Cobalt;
 use Bot::Cobalt::Common;
 
-use Math::Calc::Parser ();
+use Bot::Cobalt::Plugin::Calc::Session;
 
-sub new { bless [], shift }
+use POE;
+
+sub SESSID () { 0 }
+sub CALC   () { 1 }
+
+sub new { 
+  bless [
+    undef,                                    # SESSID
+    Bot::Cobalt::Plugin::Calc::Session->new,  # CALC
+  ], shift 
+}
 
 sub Cobalt_register {
   my ($self, $core) = splice @_, 0, 2;
+
+  my $sess = POE::Session->create(
+    object_states => [
+      $self => +{
+        _start      => 'px_start',
+        issue_calc  => 'px_issue_calc',
+        calc_result => 'px_calc_result',
+        calc_error  => 'px_calc_error',
+      },
+    ],
+  );
+  $self->[SESSID] = $sess->ID;
+
   register( $self, SERVER => 'public_cmd_calc' );
   logger->info("Loaded: calc");
   PLUGIN_EAT_NONE
@@ -18,6 +43,8 @@ sub Cobalt_register {
 
 sub Cobalt_unregister {
   my ($self, $core) = splice @_, 0, 2;
+  $poe_kernel->post( $self->[CALC]->session_id, 'shutdown' );
+  $poe_kernel->refcount_decrement( $self->[SESSID], 'Plugin loaded' );
   logger->info("Unloaded");  
   PLUGIN_EAT_NONE
 }
@@ -25,18 +52,53 @@ sub Cobalt_unregister {
 sub Bot_public_cmd_calc {
   my ($self, $core) = splice @_, 0, 2;
   my $msg     = ${ $_[0] };
-  
+
   my $msgarr  = $msg->message_array;
   my $calcstr = join ' ', @$msgarr;
-  my $result  = Math::Calc::Parser->try_evaluate($calcstr);
+  my $hints = hash(
+    context => $msg->context,
+    channel => $msg->channel,
+    nick    => $msg->src_nick,
+  )->inflate;
 
-  my $reply = defined $result ? $result : "err: ".Math::Calc::Parser->error;
-
-  broadcast( message => $msg->context, $msg->channel,
-    $msg->src_nick . ": $reply"
-  );
+  logger->debug("issue_calc '$calcstr'");
+  $poe_kernel->call( $self->[SESSID], issue_calc => $calcstr, $hints );
   
   PLUGIN_EAT_NONE
+}
+
+
+sub px_start {
+  my ($kernel, $self) = @_[KERNEL, OBJECT];
+  $kernel->refcount_increment( $_[SESSION]->ID, 'Plugin loaded' );
+  $self->[CALC]->start;
+}
+
+sub px_issue_calc {
+  my ($kernel, $self) = @_[KERNEL, OBJECT];
+  logger->debug("got issue_calc, relaying to CALC");
+  $kernel->post( $self->[CALC]->session_id, calc => @_[ARG0, ARG1] )
+}
+
+sub px_calc_result {
+  my ($kernel, $self)  = @_[KERNEL, OBJECT];
+  my ($result, $hints) = @_[ARG0, ARG1];
+  logger->debug("got calc_result");
+  broadcast( message => $hints->context, $hints->channel,
+    $hints->nick . ": $result"
+  );
+}
+
+sub px_calc_error {
+  my ($kernel, $self)  = @_[KERNEL, OBJECT];
+  my ($error, $hints) = @_[ARG0, ARG1];
+  # if this is a bad-args warn there's no hints hash - but then it's also a
+  # bug and should warn() from ::Calc::Session
+  return unless keys %$hints;
+
+  broadcast( message => $hints->context, $hints->channel,
+    $hints->nick . ": backend error: $error"
+  );
 }
 
 
