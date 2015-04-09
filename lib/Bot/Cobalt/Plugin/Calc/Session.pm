@@ -147,7 +147,7 @@ sub px_push {
 
   $kernel->delay( worker_timeout => $self->[TIMEOUT], $wheel );
   $wheel->put(
-    [ $next->{tag}, $next->{expr}, $next->{timeout} ]
+    [ $next->{tag}, $next->{expr} ]
   );
 }
 

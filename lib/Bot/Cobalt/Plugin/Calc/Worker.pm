@@ -39,7 +39,7 @@ sub worker {
         my $input = thaw( substr($buf, 0, $read_bytes, '') );
         $read_bytes = undef;
 
-        my ($tag, $expr, $timeout) = @$input;
+        my ($tag, $expr) = @$input;
 
         my $result = Math::Calc::Parser->try_evaluate($expr);
 
