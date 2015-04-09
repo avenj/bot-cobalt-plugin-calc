@@ -24,7 +24,9 @@ sub ERROR_EVENT  () { 8 }
 sub new {
   my ($class, %params) = @_;
 
+  # note the Worker proc also has a RLIMIT_CPU in place (where supported):
   my $timeout = $params{timeout}     || 1;
+
   my $maxwrk  = $params{max_workers} || 2;
 
   my $result_event = $params{result_event} || 'calc_result';
@@ -45,9 +47,9 @@ sub new {
 
 sub session_id { shift->[SESSID] }
 
-sub _wheels { shift->[WHEELS] }
+sub _wheels     { shift->[WHEELS] }
 sub _tag_by_wid { shift->[TAG_BY_WID] }
-sub _requests { shift->[REQUESTS] }
+sub _requests   { shift->[REQUESTS] }
 
 sub start {
   my $self = shift;
@@ -223,7 +225,7 @@ sub px_worker_stderr {
     my $sender_id = $req->{sender_id};
     my $hints     = $req->{hints};
     $kernel->post( $req->{sender_id} => $self->[ERROR_EVENT] =>
-      "worker '$wid' stderr: $input", $hints
+      "worker '$wid': $input", $hints
     )
   } else {
     warn "stderr from worker but request unavailable: $input"
