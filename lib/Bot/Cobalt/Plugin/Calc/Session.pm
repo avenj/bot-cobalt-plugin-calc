@@ -58,7 +58,6 @@ sub start {
         push      => 'px_push',
         
         wheel_error     => 'px_wheel_error',
-        wheel_timeout   => 'px_wheel_timeout',
         worker_input    => 'px_worker_input',
         worker_stderr   => 'px_worker_stderr',
         worker_sigchld  => 'px_worker_sigchld',
@@ -135,11 +134,10 @@ sub px_push {
   my $next  = shift @{ $self->[PENDING] };
   my $tag = $next->{tag};
   $self->[TAG_BY_WID]->{ $wheel->ID } = $tag;
-  $wheel->put(
-    [ $next->{tag}, $next->{expr}, $next->{hints} ]
-  );
 
-  $kernel->delay( wheel_timeout => $self->[TIMEOUT], $wheel->PID );
+  $wheel->put(
+    [ $next->{tag}, $next->{expr}, $next->{timeout} ]
+  );
 }
 
 sub _create_wheel {
@@ -178,13 +176,6 @@ sub _create_wheel {
   $self->[WHEELS]->{$pid} = $wheel;
 
   $wheel
-}
-
-sub px_wheel_timeout {
-  my ($kernel, $self) = @_[KERNEL, OBJECT];
-  my $pid = $_[ARG0];
-  return unless exists $self->[WHEELS]->{$pid};
-  $self->[WHEELS]->{$pid}->kill('TERM');
 }
 
 sub px_wheel_error {
