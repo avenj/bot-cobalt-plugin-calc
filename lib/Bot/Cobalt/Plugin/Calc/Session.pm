@@ -62,6 +62,7 @@ sub start {
         calc      => 'px_calc',
         push      => 'px_push',
         
+        worker_timeout  => 'px_worker_timeout',
         worker_input    => 'px_worker_input',
         worker_stderr   => 'px_worker_stderr',
         worker_sigchld  => 'px_worker_sigchld',
@@ -144,6 +145,7 @@ sub px_push {
   my $tag = $next->{tag};
   $self->[TAG_BY_WID]->{ $wheel->ID } = $tag;
 
+  $kernel->delay( worker_timeout => $self->[TIMEOUT], $wheel );
   $wheel->put(
     [ $next->{tag}, $next->{expr}, $next->{timeout} ]
   );
@@ -184,6 +186,12 @@ sub _create_wheel {
   $poe_kernel->sig_child($pid, 'worker_sigchld');
 
   $wheel
+}
+
+sub px_worker_timeout {
+  my ($kernel, $self) = @_[KERNEL, OBJECT];
+  my $wheel = $_[ARG0];
+  $wheel->kill('INT');
 }
 
 sub px_worker_input {
