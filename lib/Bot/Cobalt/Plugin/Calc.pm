@@ -122,7 +122,12 @@ Bot::Cobalt::Plugin::Calc - Calculator plugin for Bot::Cobalt
 
 A L<Bot::Cobalt> calculator plugin using L<Math::Calc::Parser>.
 
-See the L<Math::Calc::Parser> documentation for details.
+See the L<Math::Calc::Parser> documentation for details on acceptable
+expressions.
+
+(This plugin uses a "safe-ish" forked worker to do the actual calculations,
+with resource limits in place to avoid denial-of-service attacks via large
+factorials and similar.)
 
 =head1 AUTHOR
 
