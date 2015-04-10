@@ -1,5 +1,9 @@
 Revision history for Perl module Bot::Cobalt::Plugin::Calc
 
+0.004002 2015-04-10
+
+  - Minor optimizations & more verbose Session test
+
 0.004001 2015-04-09
 
   - Use worker processes with rlimits & timeouts to perform calculations
