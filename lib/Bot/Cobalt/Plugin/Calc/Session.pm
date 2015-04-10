@@ -181,8 +181,8 @@ sub _create_wheel {
   );
 
   my $pid = $wheel->PID;
-  $self->[WHEELS]->{$pid} = $wheel;
   $poe_kernel->sig_child($pid, 'worker_sigchld');
+  $self->[WHEELS]->{$pid} = $wheel;
 
   $wheel
 }

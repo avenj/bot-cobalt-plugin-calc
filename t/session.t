@@ -33,8 +33,8 @@ POE::Session->create(
       $poe_kernel->post( $_[HEAP]->{calc}->session_id, 'shutdown' );
     },
     calc_error => sub {
-      # FIXME test calc_error
-      die "Received unexpected calc_error"
+      my $err = $_[ARG0];
+      fail "Received unexpected calc_error: '$err'"
     },
   },
 );
