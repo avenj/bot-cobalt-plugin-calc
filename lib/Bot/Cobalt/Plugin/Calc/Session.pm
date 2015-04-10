@@ -25,9 +25,8 @@ sub new {
   my ($class, %params) = @_;
 
   # note the Worker proc also has a RLIMIT_CPU in place (where supported):
-  my $timeout = $params{timeout}     || 1;
-
-  my $maxwrk  = $params{max_workers} || 2;
+  my $timeout = $params{timeout}     || 2;
+  my $maxwrk  = $params{max_workers} || 4;
 
   my $result_event = $params{result_event} || 'calc_result';
   my $error_event  = $params{error_event}  || 'calc_error';
@@ -148,9 +147,7 @@ sub px_push {
   $self->[TAG_BY_WID]->{ $wheel->ID } = $tag;
 
   $kernel->delay( worker_timeout => $self->[TIMEOUT], $wheel );
-  $wheel->put(
-    [ $next->{tag}, $next->{expr} ]
-  );
+  $wheel->put( [ $next->{tag}, $next->{expr} ] );
 }
 
 sub _create_wheel {
