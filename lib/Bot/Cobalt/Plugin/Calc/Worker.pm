@@ -17,8 +17,7 @@ use Storable 'nfreeze', 'thaw';
 
 use Math::Calc::Parser ();
 
-# 16m oughta be enough for anybody
-sub MEMLIMIT_BYTES () {  16 * 1024 * 1024 }
+sub MEMLIMIT_BYTES () {  64 * 1024 * 1024 }
 
 $SIG{INT} = sub { die "Timed out!\n" };
 
