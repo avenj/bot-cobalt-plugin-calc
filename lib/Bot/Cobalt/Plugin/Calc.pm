@@ -125,9 +125,13 @@ A L<Bot::Cobalt> calculator plugin using L<Math::Calc::Parser>.
 See the L<Math::Calc::Parser> documentation for details on acceptable
 expressions.
 
-(This plugin uses a "safe-ish" forked worker to do the actual calculations,
+=head1 CAVEATS
+
+This plugin uses a "safe-ish" forked worker to do the actual calculations,
 with resource limits in place to avoid denial-of-service attacks via large
-factorials and similar.)
+factorials and similar; however, not all platforms support all relevant 
+L<BSD::Resource> rlimits, in which case it may be possible to force the bot to
+perform very large calculations.
 
 =head1 AUTHOR
 
