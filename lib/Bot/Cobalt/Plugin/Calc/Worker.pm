@@ -27,11 +27,13 @@ sub worker {
   $|++;
  
   # not error-checked, may fail silently on some platforms ...
-  setrlimit(RLIMIT_DATA, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-  setrlimit(RLIMIT_STACK, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-  setrlimit(RLIMIT_AS, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-  setrlimit(RLIMIT_VMEM, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-  setrlimit(RLIMIT_CPU, 10, 10);
+  { local $SIG{__WARN__} = sub {};
+    setrlimit(RLIMIT_DATA, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
+    setrlimit(RLIMIT_STACK, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
+    setrlimit(RLIMIT_AS, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
+    setrlimit(RLIMIT_VMEM, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
+    setrlimit(RLIMIT_CPU, 10, 10);
+  }
 
   my ($buf, $read_bytes) = '';
   while (1) {
