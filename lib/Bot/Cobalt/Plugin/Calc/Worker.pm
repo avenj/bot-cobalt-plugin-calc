@@ -26,13 +26,11 @@ sub worker {
   select *STDOUT;
   $|++;
  
-  # not error-checked, may fail silently on some platforms ...
-  { local $SIG{__WARN__} = sub {};
-    setrlimit(RLIMIT_DATA, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-    setrlimit(RLIMIT_STACK, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-    setrlimit(RLIMIT_AS, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-    setrlimit(RLIMIT_VMEM, MEMLIMIT_BYTES, MEMLIMIT_BYTES);
-    setrlimit(RLIMIT_CPU, 10, 10);
+  # not error-checked, may fail silently on some platforms ..
+  # (OpenBSD lacks RLIMIT_AS f.ex)
+  setrlimit RLIMIT_CPU, 10, 10;
+  for my $const (RLIMIT_DATA RLIMIT_STACK RLIMIT_AS RLIMIT_VMEM) {
+    eval {; setrlimit $const, MEMLIMIT_BYTES, MEMLIMIT_BYTES };
   }
 
   my ($buf, $read_bytes) = '';
