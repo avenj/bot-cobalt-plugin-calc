@@ -129,9 +129,9 @@ expressions.
 
 This plugin uses a "safe-ish" forked worker to do the actual calculations,
 with resource limits in place to avoid denial-of-service attacks via large
-factorials and similar; however, not all platforms support all relevant 
-L<BSD::Resource> rlimits, in which case it may be possible to force the bot to
-perform very large calculations.
+factorials and similar. Not all platforms support all relevant
+L<BSD::Resource> rlimits, however, in which case it may be possible to force
+the bot to perform very large calculations.
 
 =head1 AUTHOR
 
