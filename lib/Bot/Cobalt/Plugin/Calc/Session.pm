@@ -215,7 +215,8 @@ sub px_worker_stderr {
   my ($input, $wid) = @_[ARG0, ARG1];
   my $tag = $self->[TAG_BY_WID]->{$wid};
   unless (defined $tag) {
-    warn "BUG? px_worker_stderr but no tag for wheel ID '$wid'";
+    warn 
+      "BUG? px_worker_stderr but no tag for wheel ID '$wid': '$input'";
   }
   my $req = delete $self->[REQUESTS]->{$tag};
   if (defined $req) {
@@ -225,7 +226,7 @@ sub px_worker_stderr {
       "worker '$wid': $input", $hints
     )
   } else {
-    warn "stderr from worker but request unavailable: $input"
+    warn "stderr from worker but request unavailable: '$input'"
   }
 }
 
