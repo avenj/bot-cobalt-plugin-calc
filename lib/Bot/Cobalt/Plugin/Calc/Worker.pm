@@ -29,7 +29,7 @@ sub worker {
   # not error-checked, may fail silently on some platforms ..
   # (OpenBSD lacks RLIMIT_AS f.ex)
   { local $SIG{__WARN__} = sub {};
-    setrlimit RLIMIT_CPU, 10, 10;
+    eval {; setrlimit RLIMIT_CPU, 10, 10 };
     for my $const (RLIMIT_DATA RLIMIT_STACK RLIMIT_AS RLIMIT_VMEM) {
       eval {; setrlimit $const, MEMLIMIT_BYTES, MEMLIMIT_BYTES };
     }
